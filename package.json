@@ -1,0 +1,16 @@
+{
+  "name": "logger",
+  "version": "1.0.0",
+  "description": "app to log daily activities as a consultant",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "keywords": [
+    "log",
+    "logger",
+    "consultant"
+  ],
+  "author": "Philip Tunbjer",
+  "license": "MIT"
+}
