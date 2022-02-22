@@ -1,27 +1,28 @@
 const mongoose = require('mongoose');
 
-const JobSchema = new mongoose.Schema({
-  assignment: {
+const LogSchema = new mongoose.Schema({
+  logname: {
     type: String,
     required: [true, 'Please provide an assignment/job onto which the LOG entry should be attached'],
     maxlength: 50
   },
-  assignmentStatus: {
+  logtype : {
+    type: String,
+    enum: ['Uppdrag', 'Övrigt', 'Personlig']
+  },
+  logstatus: {
     type: String,
     enum: ['Ej påbörjat', 'Pågående', 'Avslutat'],
     default: 'Ej påbörjat'
   },
-  entry: {
-    type: String,
-    required: [true, 'En entry must be provided, max 500 characters'],
-    maxlength: 500,
-    minlength: 1
-  },
-  date: {
-    type: Date,
-    required: [true, 'Please provide a date for the LOG entry'],
-    default: () => Date.now()
-  },
+  entries: [{
+    type: new mongoose.Schema({
+      entry: {
+        type: String,
+        maxlength: 500
+      }
+    }, {timestamps: true})
+  }],
   createdBy: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
@@ -29,4 +30,4 @@ const JobSchema = new mongoose.Schema({
   }
 }, {timestamps: true})
 
-module.exports = mongoose.model('Job', JobSchema);
+module.exports = mongoose.model('Log', LogSchema);

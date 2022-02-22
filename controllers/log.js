@@ -29,23 +29,34 @@ const createLog = async (req, res) => {
 
 const updateLog = async (req, res) => {
   const {
-    body: {assignment, entry, assignmentStatus, date},
+    body: {logname, logtype, logstatus, entry},
     user: {userId},
     params: {id: logId}
   } = req;
 
-  if(assignment === '' || entry === '' || date === '' || assignmentStatus === '') {
-    throw new BadRequestError('Assignment, log entry or date cannot be empty');
+  if(logname === '' || logtype === '' || logstatus === '' ) {
+    throw new BadRequestError('Log name, log type or log status cannot be empty');
   }
 
   const log = await Log.findByIdAndUpdate({
     _id: logId, createdBy: userId
   },
-  req.body,
+  {
+    "$set": {
+      "logname": logname,
+      "logtype": logtype,
+      "logstatus": logstatus
+    },
+  },
   {new: true, runValidators: true});
 
   if(!log) {
     throw new NotFoundError(`No log entry with id ${logId}`);
+  }
+
+  if (entry) {
+    await log.entries.push({entry});
+    await log.save();
   }
 
   res.status(StatusCodes.OK).json({log})
@@ -65,10 +76,36 @@ const deleteLog = async (req, res) => {
   res.status(StatusCodes.OK).send();
 }
 
+const createLogEntry = async (req, res) => {
+  const {params: {id: logid}} = req;
+  const log = await Log.findById(logid);
+
+  if (!log) {
+    throw new NotFoundError(`No log with id ${logid}`);
+  }
+
+
+}
+
+const updateLogEntry = async (req, res) => {
+  const {
+    body: {entry},
+    user: {userId},
+    params: {logid: logId, entryid: entryid}
+  } = req;
+}
+
+const deleteLogEntry = async (req, res) => {
+
+}
+
 module.exports = {
   getAllLogs,
   getLog,
   createLog,
   updateLog,
-  deleteLog
+  deleteLog,
+  createLogEntry,
+  updateLogEntry,
+  deleteLogEntry
 }

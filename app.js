@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('express-asyn-errors');
+require('express-async-errors');
 
 // Security
 const helmet = require('helmet');
@@ -11,16 +11,16 @@ const express = require('express');
 const app = express();
 
 // connect DB
-const connectDB = require('');
-const authenticateUser = require('');
+const connectDB = require('./db/connect');
+const authenticateUser = require('./middleware/authentication');
 
 // routers
-const authRouter = require('');
-const logRouter = require('');
+const authRouter = require('./routes/auth');
+const logRouter = require('./routes/log');
 
 // error handler
-const notFoundMiddleWare = require('');
-const errorHandlerMiddleware = require('');
+const notFoundMiddleWare = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.set('trust proxy', 1);
 app.use(rateLimiter({
@@ -33,11 +33,14 @@ app.use(cors());
 app.use(xss());
 
 // routes
-app.use(''); // authenticate
-app.use(''); // log route
+app.use('/api/v1/auth', authRouter); // authenticate
+app.use('/api/v1/logs', authenticateUser, logRouter); // authenticate
+
+app.use(notFoundMiddleWare);
+app.use(errorHandlerMiddleware);
 
 // port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 const start = async () => {
   try {
