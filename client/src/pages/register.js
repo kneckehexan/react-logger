@@ -2,51 +2,62 @@ import React from 'react'
 import axios from 'axios'
 import makeToast from '../Toaster'
 
-const Register = () => {
-  const nameRef = React.createRef();
-  const emailRef = React.createRef();
-  const passwordRef = React.createRef();
+class Register extends React.Component {
+  constructor() {
+    super();
+    this.state={
+      username: '',
+      email: '',
+      password: ''
+    }
+  }
 
-  const registerUser = () => {
-    const name = nameRef.current.value;
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
+  handleInputChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    });
+  }
 
-    axios.post('/user/register', {
-      name,
-      email,
-      password
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios.post('http://localhost:5000/api/v1/auth/register', {
+      name: this.state.username,
+      email: this.state.email,
+      password: this.state.password
     }).then(response => {
       console.log(response.data);
       makeToast("success", response.data.message);
+      //history.push('/login');
     }).catch(err => {
-      makeToast("success", err.response.data.message);
+      makeToast("error", err.response.data.message);
     })
   }
-
-  return (
-    <div className='prompt'>
-      <div className='promptHeader'>Registrera</div>
-      <div className='promptBody'>
-        <form>
-          <div className='inputGroup'>
-            <label htmlFor='name'>Namn</label>
-            <input type='text' name='name' id='name' ref={nameRef}/>
-          </div>
-          <div className='inputGroup'>
-            <label htmlFor='email'>E-post</label>
-            <input type='email' name='email' id='email' placeholder='example@gmail.com' ref={emailRef}/>
-          </div>
-          <div className='inputGroup'>
-            <label htmlFor='password'>Lösenord</label>
-            <input type='password' name='password' id='password' ref={passwordRef}/>
-          </div>
-          <button onClick={registerUser}>Registrera</button>
-        </form>
+  
+  render() { 
+    return (
+      <div className='prompt'>
+        <div className='promptHeader'>Registrera</div>
+        <div className='promptBody'>
+          <form onSubmit={this.handleSubmit}>
+            <div className='inputGroup'>
+              <label htmlFor='username'>Namn</label>
+              <input type='text' name='username' id='username' autoComplete='on' onChange={this.handleInputChange}/>
+            </div>
+            <div className='inputGroup'>
+              <label htmlFor='email'>E-post</label>
+              <input type='email' name='email' id='email' autoComplete='on' placeholder='example@gmail.com' onChange={this.handleInputChange}/>
+            </div>
+            <div className='inputGroup'>
+              <label htmlFor='new-password'>Lösenord</label>
+              <input type='password' name='new-password' id='password' autoComplete='on' onChange={this.handleInputChange}/>
+            </div>
+            <button type='submit'>Registrera</button>
+          </form>
+        </div>
       </div>
-    </div>
-  )
-
+    )
+  }
 }
 
 export default Register

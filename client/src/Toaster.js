@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const Toast = Swal.Swal.mixin({
+const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmation: false,

@@ -1,18 +1,17 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import Login from './pages/login'
-import Register from './pages/register'
-import DashBoard from './pages/dashboard'
+import { Link, Outlet } from 'react-router-dom';
 
 function App() {
+
   return(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/dashboard" element={<DashBoard/>}/>
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <h1>Welcome</h1>
+      <nav>
+        <Link to='/register'>Register</Link> |{" "}
+        <Link to='/login'>Login</Link>
+      </nav>
+      <Outlet />
+    </div>
   )}
 
 export default App;

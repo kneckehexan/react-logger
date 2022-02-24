@@ -55,6 +55,10 @@ input:focus {
   border-bottom: 1px solid #ccc;
 }
 
+::placeholder {
+  color:#ddd;
+}
+
 button {
   background: #41444a;
   border: none;
