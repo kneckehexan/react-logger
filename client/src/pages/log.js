@@ -1,6 +1,16 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect } from 'react'
 
-const Log = () => {
+const Log = ({match}) => {
+
+  const logid = match.params.id;
+
+  useEffect(() => {
+    const getLog = async () => {
+      axios.get()
+    }
+  })
+
   return (
   <div>
     <div className='log'>

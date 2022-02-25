@@ -22,7 +22,7 @@ const logRouter = require('./routes/log');
 // error handler
 const notFoundMiddleWare = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
-const { dirname } = require('path/posix');
+//const { dirname } = require('path/posix');
 
 app.set('trust proxy', 1);
 app.use(rateLimiter({

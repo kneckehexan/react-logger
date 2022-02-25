@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import makeToast from '../Toaster';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DashBoard = () => {
 
@@ -81,18 +81,26 @@ const DashBoard = () => {
             <div className='listHead'>Sökt Log</div>
             <div className='logs'>
               {listOfSearchLogs.map(log => (
-                <div key={log.logname} className='log'>
+                <div key={log._id} className='log'>
                   <div>{log.logname}</div>
-                  <div className='open'>Öppna</div>
+                  <Link to={'/log/' + log._id}>
+                    <div className='open'>Öppna</div>
+                  </Link>
+                  <hr/>
                 </div>
               ))}
             </div>
             <div className='listHead'>Senast använda Loggar</div>
             <div id='logres' className='logs'>
               {listOfLogs.slice(0, 5).map(log => (
-                <div key={log.logname} className='log'>
-                  <div>{log.logname}</div>
-                  <div className='open'>Öppna</div>
+                <div>
+                  <div key={log._id} className='log'>
+                    <div>{log.logname}</div>
+                    <Link to={'/log/' + log._id}>
+                      <div className='open'>Öppna</div>
+                    </Link>
+                  </div>
+                  <hr/>
                 </div>
               ))}
             </div>

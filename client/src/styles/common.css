@@ -100,3 +100,34 @@ button:focus, button:hover {
   align-items: center;
   margin-bottom: 1rem;
 }
+
+.open {
+  background:#41444a;
+  padding: 0.25rem 1rem;
+  border-radius: 5px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.open:focus, .open:hover {
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.36);
+  transform: translate(-2px, -2px);
+  transition: all 0.2s;
+}
+
+a:link {
+  text-decoration: none;
+  color: #ccc;
+}
+
+a:visited {
+  color: #ddd;
+}
+
+a:hover {
+  color: #ddd;
+}
+
+hr {
+  border: 1px solid #e6e6e6;
+}

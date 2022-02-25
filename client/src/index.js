@@ -20,7 +20,7 @@ ReactDOM.render(
           <Route path="register" element={<Register/>}/>
         </Route>
         <Route path="/dashboard" element={<DashBoard/>}/>
-        <Route path="/log" element={<Log/>}/>
+        <Route path="/log/:id" element={<Log/>}/>
       </Routes>
     </BrowserRouter>,
   rootElement);
