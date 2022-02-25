@@ -11,7 +11,9 @@ const getAllLogs = async (req, res) => {
 }
 
 const getLog = async (req, res) => {
-  const {user: {userId}, params: {id: logId}} = req;
+  console.log('using getLog');
+  console.log(req);
+  const {user: {userId}, params: {logid: logId}} = req;
   const log = await Log.findOne({
     _id: logId,
     createdBy: userId
