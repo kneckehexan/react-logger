@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   getAllLogs,
   getLog,
-  searchLog,
   createLog,
   updateLog,
   deleteLog,
