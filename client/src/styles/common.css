@@ -2,7 +2,6 @@
 .prompt {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26);
   padding: 1rem;
-  position: relative;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -130,4 +129,57 @@ a:hover {
 
 hr {
   border: 1px solid #e6e6e6;
+}
+
+.logcard{
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  width: 50vw;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}
+
+.logheader {
+  text-transform: uppercase;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 0;
+}
+
+.logupdated {
+  font-style: italic;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.logcontent {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.entrycontent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.entry, .entrydate {
+  margin-right: 2rem;
+  padding: 0.25rem 1rem;
+}
+
+.entrybtns {
+  padding: 0.25rem 1rem;
+}
+
+.entry {
+  text-align: left;
+}
+
+.entrybtns {
+  display: flex;
 }

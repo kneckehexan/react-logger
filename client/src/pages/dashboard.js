@@ -83,7 +83,10 @@ const DashBoard = () => {
               {listOfSearchLogs.map(log => (
                 <div key={log._id} className='log'>
                   <div>{log.logname}</div>
-                  <Link to={{pathname: '/logs', query: log._id}}>
+                  <Link to={{
+                    pathname: '/logs',
+                    query: log._id
+                    }}>
                     <div className='open'>Öppna</div>
                   </Link>
                   <hr/>
@@ -93,15 +96,10 @@ const DashBoard = () => {
             <div className='listHead'>Senast använda Loggar</div>
             <div id='logres' className='logs'>
               {listOfLogs.slice(0, 5).map(log => (
-                <div>
-                  <div key={log._id} className='log'>
+                <div key={log._id} >
+                  <div className='log'>
                     <div>{log.logname}</div>
-                    <Link to={{
-                      pathname: '/logs',
-                      state: {
-                        logid: log._id
-                      }
-                      }}>
+                    <Link to='/logs' state={{log: log}}>
                       <div className='open'>Öppna</div>
                     </Link>
                   </div>

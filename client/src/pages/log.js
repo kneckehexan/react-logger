@@ -1,15 +1,9 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import makeToast from '../Toaster';
 
 const Log = () => {
-
-  const api = 'http://localhost:3000/api/v1';
-  const params = useParams();
-  //const logid = params.state.logid;
-  const { logid } = useParams();
-  const [curLog, setCurLog] = React.useState([]);
 
   const token = localStorage.getItem('accessToken');
   const reqConfig = {
@@ -18,29 +12,46 @@ const Log = () => {
     }
   };
 
-  useEffect(() => {
-    const getLog = async () => {
-      const result = await axios.get(api + '/logs/' + logid, reqConfig)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(err => {
-          makeToast("error", err.response.data.msg);
-        })
-        setCurLog(result.data);
-    }
+  const api = 'http://localhost:3000/api/v1';
+  const location = useLocation();
+  //const { logid } = location.state;
+  const { log } = location.state;
+  //const [entries, setEntries] = React.useState([]);
+  //const [curLog, setCurLog] = React.useState(() => {
+  //  const getLog = async () => {
+  //    const result = await axios.get(api + '/logs/' + logid, reqConfig);
+  //    setEntries(result.data.log.entries);
+  //  }
+  //  return getLog();
+  //});
 
-    getLog();
-  }, []);
+
+  //useEffect(() => {
+  //  const getLog = async () => {
+  //    const result = await axios.get(api + '/logs/' + logid, reqConfig);
+  //    setCurLog(result.data);
+  //    //console.log(curLog.log);
+  //  }
+
+  //  getLog();
+  //}, []);
 
   return (
-  <div>
-    <div className='log'>
-      <h1 className='logHeader'>Log</h1>
-      <div className='logContent' id='logContent'>
-
+  <div className='logcard'>
+      <h1 className='logheader'>{log.logname}</h1>
+      <div className='logupdated'>Log senast uppdaterad: {new Date(log.updatedAt).toLocaleString()}</div>
+      <div className='logcontent' id='logcontent'>
+        {log.entries.map(entry => (
+          <div key={entry._id} className='entrycontent'>
+            <div className='entrydate'>{new Date(entry.createdAt).toLocaleDateString()}:</div>
+            <div className='entry'>{entry.entry}</div>
+            <div className='entrybtns'>
+              <div>Redigera</div>
+              <div>Radera</div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
   </div>
   );
 }
