@@ -11,8 +11,6 @@ const getAllLogs = async (req, res) => {
 }
 
 const getLog = async (req, res) => {
-  //console.log('using getLog');
-  //console.log(req);
   const {user: {userId}, params: {logid: logId}} = req;
   const log = await Log.findOne({
     _id: logId,
@@ -34,7 +32,7 @@ const createLog = async (req, res) => {
 
 const updateLog = async (req, res) => {
   const {
-    body: {logname, logtype, logstatus, entry},
+    body: {logname, logtype, logstatus},
     user: {userId},
     params: {id: logId}
   } = req;
@@ -59,11 +57,6 @@ const updateLog = async (req, res) => {
     throw new NotFoundError(`No log entry with id ${logId}`);
   }
 
-  if (entry) {
-    await log.entries.push({entry});
-    await log.save();
-  }
-
   res.status(StatusCodes.OK).json({log})
 }
 
@@ -81,36 +74,11 @@ const deleteLog = async (req, res) => {
   res.status(StatusCodes.OK).send();
 }
 
-const createLogEntry = async (req, res) => {
-  const {params: {id: logid}} = req;
-  const log = await Log.findById(logid);
-
-  if (!log) {
-    throw new NotFoundError(`No log with id ${logid}`);
-  }
-
-
-}
-
-const updateLogEntry = async (req, res) => {
-  const {
-    body: {entry},
-    user: {userId},
-    params: {logid: logId, entryid: entryid}
-  } = req;
-}
-
-const deleteLogEntry = async (req, res) => {
-
-}
 
 module.exports = {
   getAllLogs,
   getLog,
   createLog,
   updateLog,
-  deleteLog,
-  createLogEntry,
-  updateLogEntry,
-  deleteLogEntry
+  deleteLog
 }

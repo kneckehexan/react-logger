@@ -81,14 +81,13 @@ const DashBoard = () => {
             <div className='listHead'>Sökt Log</div>
             <div className='logs'>
               {listOfSearchLogs.map(log => (
-                <div key={log._id} className='log'>
-                  <div>{log.logname}</div>
-                  <Link to={{
-                    pathname: '/logs',
-                    query: log._id
-                    }}>
-                    <div className='open'>Öppna</div>
-                  </Link>
+                <div key={log._id}>
+                  <div className='log'>
+                    <div>{log.logname}</div>
+                    <Link to='/logs' state={{log: log}}>
+                      <div className='open'>Öppna</div>
+                    </Link>
+                  </div>
                   <hr/>
                 </div>
               ))}

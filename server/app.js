@@ -18,6 +18,7 @@ const authenticateUser = require('./middleware/authentication');
 // routers
 const authRouter = require('./routes/auth');
 const logRouter = require('./routes/log');
+const entryRouter = require('./routes/entry');
 
 // error handler
 const notFoundMiddleWare = require('./middleware/not-found');
@@ -39,6 +40,7 @@ app.use(express.static('client'))
 // routes
 app.use('/api/v1/auth', authRouter); // authenticate
 app.use('/api/v1/logs', authenticateUser, logRouter); // authenticate
+app.use('/api/v1/entry', authenticateUser, entryRouter); // authenticate
 
 app.use(notFoundMiddleWare);
 app.use(errorHandlerMiddleware);

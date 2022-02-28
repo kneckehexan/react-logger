@@ -131,14 +131,25 @@ hr {
   border: 1px solid #e6e6e6;
 }
 
+.back {
+  position: fixed;
+  left: 10%;
+  top: 20px;
+  width: 25vw;
+  transform: translate(-50%, 0px);
+  display: flex;
+  justify-content: center;
+  font-size: x-large;
+}
+
 .logcard{
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26);
   padding: 1rem;
-  position: fixed;
+  position: absolute;
   left: 50%;
-  top: 30%;
+  top: 100px;
   width: 50vw;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0px);
   border-radius: 4px;
   display: flex;
   flex-flow: column wrap;
@@ -164,22 +175,75 @@ hr {
 
 .entrycontent {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0.25rem 0rem;
+  padding: 0.25rem 1rem;
 }
 
-.entry, .entrydate {
-  margin-right: 2rem;
-  padding: 0.25rem 1rem;
+.entrydate {
+  margin-right: 1rem;
+  font-weight: bold;
+  min-width: fit-content;
 }
 
 .entrybtns {
   padding: 0.25rem 1rem;
+  margin-left: auto;
 }
 
 .entry {
-  text-align: left;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .entrybtns {
   display: flex;
+}
+
+.fntAwe {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.entryedit {
+  display: hidden;
+}
+
+textarea {
+  max-width: 49vw;
+  width: 49vw;
+  resize: vertical;
+  height: 3rem;
+}
+
+.startnav {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+}
+
+.startnavlink {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+a .startnavlink {
+  color: #000;
+}
+
+.startcard {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  position: relative;
+  left: 50%;
+  width: 50vw;
+  transform: translate(-50%, 100%);
+  border-radius: 4px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
 }
