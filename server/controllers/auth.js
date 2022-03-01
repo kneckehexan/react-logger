@@ -3,7 +3,6 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
 
 const register = async (req, res) => {
-  console.log('register user in server')
   const user = await User.create({...req.body});
   if (!user) {
     throw new BadRequestError('Something went wrong.')

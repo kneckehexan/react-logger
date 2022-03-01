@@ -1,11 +1,15 @@
 
+:root {
+  --cardwidthdesktop: 80vw;
+}
+
 .prompt {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.26);
   padding: 1rem;
   position: fixed;
   left: 50%;
   top: 50%;
-  width: 25vw;
+  width: var(--cardwidthdesktop);
   transform: translate(-50%, -50%);
   border-radius: 4px;
 }
@@ -134,8 +138,8 @@ hr {
 .back {
   position: fixed;
   left: 10%;
-  top: 20px;
-  width: 25vw;
+  top: 50px;
+  width: var(--cardwidthdesktop);
   transform: translate(-50%, 0px);
   display: flex;
   justify-content: center;
@@ -148,7 +152,7 @@ hr {
   position: absolute;
   left: 50%;
   top: 100px;
-  width: 50vw;
+  width: var(--cardwidthdesktop);
   transform: translate(-50%, 0px);
   border-radius: 4px;
   display: flex;
@@ -213,8 +217,8 @@ hr {
 }
 
 textarea {
-  max-width: 49vw;
-  width: 49vw;
+  max-width: var(--cardwidthdesktop);
+  width: var(--cardwidthdesktop);
   resize: vertical;
   height: 3rem;
 }
@@ -240,7 +244,7 @@ a .startnavlink {
   padding: 1rem;
   position: relative;
   left: 50%;
-  width: 50vw;
+  width: var(--cardwidthdesktop);
   transform: translate(-50%, 100%);
   border-radius: 4px;
   display: flex;
@@ -254,3 +258,27 @@ a .startnavlink {
   align-items: center;
   justify-content: space-between;
 }
+
+.changelogname {
+  display: flex;
+  flex-flow: row nowrap;
+}
+/**
+@media only screen and (max-width: 600px) {
+  .startcard {
+    width: var(--cardwidthdesktop)*1.5;
+  }
+
+  textarea {
+    max-width: var(--cardwidthdesktop)*1.5 -1vw;
+    width: var(--cardwidthdesktop)*1.5 -1vw;
+  }
+
+  .logcard{
+    width: var(--cardwidthdesktop)*1.5;
+  }
+
+  .prompt {
+    width: var(--cardwidthdesktop);
+  }
+}*/

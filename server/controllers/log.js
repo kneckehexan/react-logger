@@ -32,9 +32,8 @@ const createLog = async (req, res) => {
 
 const updateLog = async (req, res) => {
   const {
-    body: {logname, logtype, logstatus},
-    user: {userId},
-    params: {id: logId}
+    body: {logid, logname, logtype, logstatus},
+    user: {userId}
   } = req;
 
   if(logname === '' || logtype === '' || logstatus === '' ) {
@@ -42,7 +41,7 @@ const updateLog = async (req, res) => {
   }
 
   const log = await Log.findByIdAndUpdate({
-    _id: logId, createdBy: userId
+    _id: logid, createdBy: userId
   },
   {
     "$set": {

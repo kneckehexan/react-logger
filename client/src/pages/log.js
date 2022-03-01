@@ -5,7 +5,64 @@ import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import structuredCopy from '@ungap/structured-clone';
 import axios from 'axios';
 import { confirm } from 'react-confirm-box';
+import Logout from './logout';
 //import makeToast from '../Toaster';
+
+const EditLogName = ({logentry, setLogentry}) => {
+
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem('accessToken');
+  const reqConfig = {
+    headers: {
+      Authorization:  `Bearer ${token}`
+    }
+  };
+
+  const api = 'http://localhost:3000/api/v1';
+
+  const [logname, setLogname] = React.useState(logentry.logname)
+
+
+  const handleChange = (e) => {
+    setLogname(e.target.value);
+  }
+
+  const updateLogEntry = () => {
+    var cpyLog = structuredCopy(logentry);
+    cpyLog.logname = logname;
+    cpyLog.show = false;
+    setLogentry(cpyLog);
+  }
+
+  const changeLogName = (e) => {
+    e.preventDefault();
+    const cln = async () => {
+      const res = await axios.patch(
+        api + '/logs',
+        {
+          logid: logentry._id,
+          logname: logname,
+          logtype: 'Övrigt', //<-- HARDCODED FOR NOW
+          logstatus: 'Pågående' //<-- HARDCODED FOR NOW
+        },
+        reqConfig
+        )
+        .catch(err => console.error(err));
+      }
+    cln();
+    updateLogEntry();
+  }
+
+  return (
+    <div>
+      <form onSubmit={changeLogName} className='changelogname'>
+        <input type='text' defaultValue={logname} onChange={handleChange} />
+        <button type='submit'>Skicka</button>
+      </form>
+    </div>
+  )
+}
 
 const NewEntry = ({logentry, setLogentry}) => {
 
@@ -120,7 +177,7 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
   )
 }
 
-const Log = () => {
+const Log = (props) => {
 
   const navigate = useNavigate();
 
@@ -134,9 +191,10 @@ const Log = () => {
   const api = 'http://localhost:3000/api/v1';
 
   const location = useLocation();
-  const { log, listOfLogs, setListOfLogs } = location.state;
+  const { log } = location.state;
 
   log.entries.forEach(item => (item.show = false));
+  log.show = false;
 
   log.entries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
@@ -156,6 +214,17 @@ const Log = () => {
     setLogentry(cpyLog);
   }
 
+  const startEditLogName = () => {
+    var cpyLog = structuredCopy(logentry);
+    if (logentry.show === false) {
+      cpyLog.show = true;
+    } else {
+      cpyLog.show = false;
+    }
+
+    setLogentry(cpyLog);
+  }
+
   const popEntry = (id) => {
     var cpyLog = structuredCopy(logentry);
     const index = cpyLog.entries.findIndex(x => x._id === id);
@@ -166,9 +235,16 @@ const Log = () => {
     setLogentry(cpyLog);
   }
 
+  const confirmoptions = {
+    labels: {
+      confirmable: 'Ja',
+      cancellable: 'Nej'
+    }
+  }
+
   const deleteEntry = (entryid) => {
     const de = async () => {
-      const ans = await confirm('Är du säker?');
+      const ans = await confirm('Är du säker?', confirmoptions);
       if (!ans){
         return;
       }
@@ -191,19 +267,9 @@ const Log = () => {
     de()
   }
 
-  const popLog = (id) => {
-    var cpyLogs = structuredCopy(listOfLogs);
-    const index = cpyLogs.findIndex(x => x._id === id);
-    if (index > -1) {
-      cpyLogs.splice(index, 1);
-    }
-
-    setListOfLogs(cpyLogs);
-  }
-
   const deleteLog = (logid) => {
     const dl = async () => {
-      const ans = await confirm('Är du säker?');
+      const ans = await confirm('Är du säker?', confirmoptions);
       if (!ans) {
         return;
       }
@@ -218,7 +284,6 @@ const Log = () => {
       )
       .then(response => {
         console.log(response);
-        popLog(logentry._id);
         navigate('/dashboard');
       })
       .catch(err => console.error(err));
@@ -229,6 +294,7 @@ const Log = () => {
 
   return (
     <div>
+      <Logout />
       <div className='back'>
         <Link to='/dashboard'><div className='open'>&larr;</div></Link>
       </div>
@@ -238,9 +304,12 @@ const Log = () => {
             <h1 className='logheader'>{logentry.logname}</h1>
             <div className='logupdated'>Log senast uppdaterad: {new Date(logentry.updatedAt).toLocaleString()}</div>
           </div>
+          <div>
+            {logentry.show ? <EditLogName logentry={logentry} setLogentry={setLogentry}/> : null}
+          </div>
           <div className='entrybtns'>
-            <div className='fntAwe'><FontAwesomeIcon icon={faPenToSquare} title='Redigera lognamn'/></div>
-            <div className='fntAwe'><FontAwesomeIcon icon={faTrash} title='Radera log'/></div>
+            <div className='fntAwe' onClick={startEditLogName}><FontAwesomeIcon icon={faPenToSquare} title='Redigera lognamn'/></div>
+            <div className='fntAwe' onClick={deleteLog}><FontAwesomeIcon icon={faTrash} title='Radera log'/></div>
           </div>
         </div>
           <div>

@@ -1,63 +1,60 @@
 import React from 'react'
 import axios from 'axios'
 import makeToast from '../Toaster'
+import { useNavigate } from 'react-router-dom';
 
-class Register extends React.Component {
-  constructor() {
-    super();
-    this.state={
-      username: '',
-      email: '',
-      password: ''
-    }
+const Register = () => {
+
+  const [inputs, setInputs] = React.useState({});
+
+  const handleInputChange = (e) => {
+    setInputs(prevState => ({...prevState, [e.target.id]: e.target.value}));
   }
 
-  handleInputChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    });
-  }
+  const navigate = useNavigate();
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     axios.post('http://localhost:5000/api/v1/auth/register', {
-      name: this.state.username,
-      email: this.state.email,
-      password: this.state.password
-    }).then(response => {
-      console.log(response.data);
-      makeToast("success", response.data.message);
-      //history.push('/login');
-    }).catch(err => {
-      makeToast("error", err.response.data.message);
+      name: inputs.username,
+      email: inputs.email,
+      password: inputs.password
+    })
+    .then(response => {
+      localStorage.setItem('accessToken', response.data.token);
+      makeToast("success", response.data.msg);
+    })
+    .then(response => {
+      navigate('/dashboard');
+    })
+    .catch(error => {
+      makeToast("error", error.response.data.msg);
     })
   }
   
-  render() { 
-    return (
-      <div className='prompt'>
-        <div className='promptHeader'>Registrera</div>
-        <div className='promptBody'>
-          <form onSubmit={this.handleSubmit}>
-            <div className='inputGroup'>
-              <label htmlFor='username'>Namn</label>
-              <input type='text' name='username' id='username' autoComplete='on' onChange={this.handleInputChange}/>
-            </div>
-            <div className='inputGroup'>
-              <label htmlFor='email'>E-post</label>
-              <input type='email' name='email' id='email' autoComplete='on' placeholder='example@gmail.com' onChange={this.handleInputChange}/>
-            </div>
-            <div className='inputGroup'>
-              <label htmlFor='new-password'>Lösenord</label>
-              <input type='password' name='new-password' id='password' autoComplete='on' onChange={this.handleInputChange}/>
-            </div>
-            <button type='submit'>Registrera</button>
-          </form>
-        </div>
+  return (
+    <div className='prompt'>
+      <div className='promptHeader'>Registrera</div>
+      <div className='promptBody'>
+        <form onSubmit={handleSubmit}>
+          <div className='inputGroup'>
+            <label htmlFor='username'>Namn</label>
+            <input type='text' name='username' id='username' autoComplete='on' onChange={handleInputChange}/>
+          </div>
+          <div className='inputGroup'>
+            <label htmlFor='email'>E-post</label>
+            <input type='email' name='email' id='email' autoComplete='on' placeholder='example@gmail.com' onChange={handleInputChange}/>
+          </div>
+          <div className='inputGroup'>
+            <label htmlFor='new-password'>Lösenord</label>
+            <input type='password' name='new-password' id='password' autoComplete='on' onChange={handleInputChange}/>
+          </div>
+          <button type='submit'>Registrera</button>
+        </form>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Register

@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect } from 'react'
 import makeToast from '../Toaster';
 import { Link, useNavigate } from 'react-router-dom';
+import structuredClone from '@ungap/structured-clone';
+import Logout from './logout';
 
 const DashBoard = () => {
 
@@ -11,7 +13,7 @@ const DashBoard = () => {
 
   const [listOfLogs, setListOfLogs] = React.useState([]);
   const [listOfSearchLogs, setListOfSearchLogs] = React.useState([]);
-
+  const [tmplog, setTmplog] = React.useState();
   const [inputs, setInputs] = React.useState({});
   const handleInputChange = (e) => {
     setInputs(prevState => ({...prevState, [e.target.name]: e.target.value}));
@@ -34,6 +36,13 @@ const DashBoard = () => {
     getLogData(reqConfig);
   }, []);
 
+  const addCreatedLog = (log) => {
+    var cpyLog = structuredClone(listOfLogs);
+    cpyLog.push(log);
+    setListOfLogs(cpyLog);
+    console.log(listOfLogs);
+  }
+
   const handleSearch = (e) => {
     const val = e.target.value;
     var filteredArray = listOfLogs.filter((log) => {
@@ -53,11 +62,12 @@ const DashBoard = () => {
       await axios.post(
         api + '/logs',
         {
-          logname: inputs.logname
+          logname: inputs.latestlogs
         },
         reqConfig)
           .then(response => {
-            console.log(response.data);
+            console.log(response.data.log)
+            addCreatedLog(response.data.log);
           })
           .catch(err => {
             console.log(err);
@@ -69,6 +79,7 @@ const DashBoard = () => {
 
   return (
   <div>
+    <Logout />
     <div className='prompt'>
       <div className='promptHeader'>LOG</div>
       <div className='promptBody'>
@@ -98,7 +109,7 @@ const DashBoard = () => {
                 <div key={log._id} >
                   <div className='log'>
                     <div>{log.logname}</div>
-                    <Link to='/logs' state={{log: log}}>
+                    <Link to='/logs' state={{log}}>
                       <div className='open'>Öppna</div>
                     </Link>
                   </div>
