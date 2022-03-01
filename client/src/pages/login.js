@@ -3,8 +3,6 @@ import axios from 'axios';
 import makeToast from '../Toaster';
 import { useNavigate } from 'react-router-dom';
 
-const api = process.env.REACT_APP_API;
-
 const Login = () => {
   const navigate = useNavigate();
 
@@ -16,7 +14,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post(api + '/auth/login', {
+    axios.post('/auth/login', {
       email: inputs.email,
       password: inputs.password
     }).then(response => {

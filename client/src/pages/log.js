@@ -8,8 +8,6 @@ import { confirm } from 'react-confirm-box';
 import Logout from './logout';
 import reqConfig from '../app/vars';
 
-const api = process.env.REACT_APP_API;
-
 const EditLogName = ({logentry, setLogentry}) => {
 
   const token = localStorage.getItem('accessToken');
@@ -32,7 +30,7 @@ const EditLogName = ({logentry, setLogentry}) => {
     e.preventDefault();
     const cln = async () => {
       await axios.patch(
-        api + '/logs',
+        '/logs',
         {
           logid: logentry._id,
           logname: logname,
@@ -78,7 +76,7 @@ const NewEntry = ({logentry, setLogentry}) => {
     e.preventDefault();
     const cne = async () => {
       await axios.post(
-        api + '/entry',
+        '/entry',
         {
           entry: newEntry,
           logid: logentry._id
@@ -131,7 +129,7 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
 
     const update = async () => {
       await axios.patch(
-        api + '/entry',
+        '/entry',
         {
           entry: entry,
           logid: logentry._id,
@@ -223,7 +221,7 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        api + '/entry',
+        '/entry',
         {headers: {
           Authorization: reqConfig(token).Authorization
         },
@@ -248,7 +246,7 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        api + '/logs',
+        '/logs',
         {headers: {
           Authorization: reqConfig(token).Authorization
         },

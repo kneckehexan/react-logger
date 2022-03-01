@@ -1,18 +1,11 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
-import makeToast from '../Toaster';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import structuredClone from '@ungap/structured-clone';
 import Logout from './logout';
 import reqConfig from '../app/vars';
 
-const api = process.env.REACT_APP_API;
-
 const DashBoard = () => {
-
-  //const api = 'http://localhost:3000/api/v1';
-
-  const navigate = useNavigate();
 
   const [listOfLogs, setListOfLogs] = React.useState([]);
   const [listOfSearchLogs, setListOfSearchLogs] = React.useState([]);
@@ -22,15 +15,10 @@ const DashBoard = () => {
   }
 
   const token = localStorage.getItem('accessToken');
-  //const reqConfig = {
-  //  headers: {
-  //    Authorization:  `Bearer ${token}`
-  //  }
-  //};
 
   useEffect(() => {
     const getLogData = async (config) => {
-      const result = await axios.get(api + '/logs', reqConfig(token))
+      const result = await axios.get('/logs', reqConfig(token))
 
       setListOfLogs(result.data.logs);
     }
@@ -62,7 +50,7 @@ const DashBoard = () => {
 
     const createLog = async () => {
       await axios.post(
-        api + '/logs',
+        '/logs',
         {
           logname: inputs.latestlogs
         },
