@@ -7,7 +7,6 @@ import Login from './pages/login';
 import Register from './pages/register';
 import DashBoard from './pages/dashboard';
 import Log from './pages/log';
-import Logout from './pages/logout';
 
 import './styles/common.css';
 

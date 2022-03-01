@@ -4,36 +4,38 @@ import makeToast from '../Toaster';
 import { Link, useNavigate } from 'react-router-dom';
 import structuredClone from '@ungap/structured-clone';
 import Logout from './logout';
+import reqConfig from '../app/vars';
+
+const api = process.env.REACT_APP_API;
 
 const DashBoard = () => {
 
-  const api = 'http://localhost:3000/api/v1';
+  //const api = 'http://localhost:3000/api/v1';
 
   const navigate = useNavigate();
 
   const [listOfLogs, setListOfLogs] = React.useState([]);
   const [listOfSearchLogs, setListOfSearchLogs] = React.useState([]);
-  const [tmplog, setTmplog] = React.useState();
   const [inputs, setInputs] = React.useState({});
   const handleInputChange = (e) => {
     setInputs(prevState => ({...prevState, [e.target.name]: e.target.value}));
   }
 
   const token = localStorage.getItem('accessToken');
-  const reqConfig = {
-    headers: {
-      Authorization:  `Bearer ${token}`
-    }
-  };
+  //const reqConfig = {
+  //  headers: {
+  //    Authorization:  `Bearer ${token}`
+  //  }
+  //};
 
   useEffect(() => {
     const getLogData = async (config) => {
-      const result = await axios.get(api + '/logs', config)
+      const result = await axios.get(api + '/logs', reqConfig(token))
 
       setListOfLogs(result.data.logs);
     }
 
-    getLogData(reqConfig);
+    getLogData();
   }, []);
 
   const addCreatedLog = (log) => {
@@ -64,7 +66,7 @@ const DashBoard = () => {
         {
           logname: inputs.latestlogs
         },
-        reqConfig)
+        reqConfig(token))
           .then(response => {
             console.log(response.data.log)
             addCreatedLog(response.data.log);

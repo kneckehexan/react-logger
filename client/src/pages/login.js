@@ -3,6 +3,8 @@ import axios from 'axios';
 import makeToast from '../Toaster';
 import { useNavigate } from 'react-router-dom';
 
+const api = process.env.REACT_APP_API;
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -10,21 +12,14 @@ const Login = () => {
   const handleInputChange = (e) => {
     setInputs(prevState => ({...prevState, [e.target.id]: e.target.value}));
   }
-  //const [email, setEmail] = React.useState('');
-  //const [password, setPassword] = React.useState('');
-
-  //const handleInputChange = (e) => {
-  //  
-  //}
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:5000/api/v1/auth/login', {
+    axios.post(api + '/auth/login', {
       email: inputs.email,
       password: inputs.password
     }).then(response => {
-      console.log(response.data);
       makeToast("success", response.data.msg);
       localStorage.setItem('accessToken', response.data.token);
     }).then(response => {

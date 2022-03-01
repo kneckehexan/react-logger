@@ -3,7 +3,11 @@ import axios from 'axios'
 import makeToast from '../Toaster'
 import { useNavigate } from 'react-router-dom';
 
+const api = process.env.REACT_APP_API;
+
 const Register = () => {
+
+  const navigate = useNavigate();
 
   const [inputs, setInputs] = React.useState({});
 
@@ -11,12 +15,10 @@ const Register = () => {
     setInputs(prevState => ({...prevState, [e.target.id]: e.target.value}));
   }
 
-  const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post('http://localhost:5000/api/v1/auth/register', {
+    axios.post(api + '/auth/register', {
       name: inputs.username,
       email: inputs.email,
       password: inputs.password

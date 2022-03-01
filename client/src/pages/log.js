@@ -6,20 +6,13 @@ import structuredCopy from '@ungap/structured-clone';
 import axios from 'axios';
 import { confirm } from 'react-confirm-box';
 import Logout from './logout';
-//import makeToast from '../Toaster';
+import reqConfig from '../app/vars';
+
+const api = process.env.REACT_APP_API;
 
 const EditLogName = ({logentry, setLogentry}) => {
 
-  const navigate = useNavigate();
-
   const token = localStorage.getItem('accessToken');
-  const reqConfig = {
-    headers: {
-      Authorization:  `Bearer ${token}`
-    }
-  };
-
-  const api = 'http://localhost:3000/api/v1';
 
   const [logname, setLogname] = React.useState(logentry.logname)
 
@@ -38,7 +31,7 @@ const EditLogName = ({logentry, setLogentry}) => {
   const changeLogName = (e) => {
     e.preventDefault();
     const cln = async () => {
-      const res = await axios.patch(
+      await axios.patch(
         api + '/logs',
         {
           logid: logentry._id,
@@ -46,7 +39,7 @@ const EditLogName = ({logentry, setLogentry}) => {
           logtype: 'Övrigt', //<-- HARDCODED FOR NOW
           logstatus: 'Pågående' //<-- HARDCODED FOR NOW
         },
-        reqConfig
+        reqConfig(token)
         )
         .catch(err => console.error(err));
       }
@@ -67,13 +60,7 @@ const EditLogName = ({logentry, setLogentry}) => {
 const NewEntry = ({logentry, setLogentry}) => {
 
   const token = localStorage.getItem('accessToken');
-  const reqConfig = {
-    headers: {
-      Authorization:  `Bearer ${token}`
-    }
-  };
 
-  const api = 'http://localhost:3000/api/v1';
   const [newEntry, setNewEntry] = React.useState('');
 
   const handleChange = (e) => {
@@ -96,7 +83,7 @@ const NewEntry = ({logentry, setLogentry}) => {
           entry: newEntry,
           logid: logentry._id
         },
-        reqConfig
+        reqConfig(token)
       )
       .then(response => {
         addLogEntry(response.data);
@@ -130,6 +117,7 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
     for (let l in cpyLog.entries) {
       if (cpyLog.entries[l]._id === entryid) {
         cpyLog.entries[l].entry = entrytext;
+        cpyLog.entries[l].show = false;
         break;
       }
     }
@@ -137,13 +125,6 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
   }
 
   const token = localStorage.getItem('accessToken');
-  const reqConfig = {
-    headers: {
-      Authorization:  `Bearer ${token}`
-    }
-  };
-
-  const api = 'http://localhost:3000/api/v1';
 
   const updateEntry = (e) => {
     e.preventDefault();
@@ -156,7 +137,7 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
           logid: logentry._id,
           entryid: entryId
         },
-        reqConfig
+        reqConfig(token)
         ).then(response => {
         })
           .catch(err => {
@@ -177,18 +158,11 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
   )
 }
 
-const Log = (props) => {
+const Log = () => {
 
   const navigate = useNavigate();
 
   const token = localStorage.getItem('accessToken');
-  const reqConfig = {
-    headers: {
-      Authorization:  `Bearer ${token}`
-    }
-  };
-
-  const api = 'http://localhost:3000/api/v1';
 
   const location = useLocation();
   const { log } = location.state;
@@ -251,7 +225,7 @@ const Log = (props) => {
       await axios.delete(
         api + '/entry',
         {headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: reqConfig(token).Authorization
         },
         data: {
           logid: logentry._id,
@@ -267,7 +241,7 @@ const Log = (props) => {
     de()
   }
 
-  const deleteLog = (logid) => {
+  const deleteLog = () => {
     const dl = async () => {
       const ans = await confirm('Är du säker?', confirmoptions);
       if (!ans) {
@@ -276,7 +250,7 @@ const Log = (props) => {
       await axios.delete(
         api + '/logs',
         {headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: reqConfig(token).Authorization
         },
         data: {
           logid: logentry._id
