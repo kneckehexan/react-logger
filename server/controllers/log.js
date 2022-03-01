@@ -61,9 +61,15 @@ const updateLog = async (req, res) => {
 }
 
 const deleteLog = async (req, res) => {
-  const {user: {userId}, params: {id: logId}} = req;
+  const {
+    body: {
+      logid: logid
+    },
+    user: {userId}
+    } = req;
+
   const log = await Log.findByIdAndRemove({
-    _id: logId,
+    _id: logid,
     createdBy: userId
   });
 
@@ -71,7 +77,7 @@ const deleteLog = async (req, res) => {
     throw new NotFoundError(`No log entry with id ${logId}`);
   }
 
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).json({msg: 'success'});
 }
 
 

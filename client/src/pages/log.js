@@ -134,7 +134,7 @@ const Log = () => {
   const api = 'http://localhost:3000/api/v1';
 
   const location = useLocation();
-  const { log } = location.state;
+  const { log, listOfLogs, setListOfLogs } = location.state;
 
   log.entries.forEach(item => (item.show = false));
 
@@ -191,14 +191,58 @@ const Log = () => {
     de()
   }
 
+  const popLog = (id) => {
+    var cpyLogs = structuredCopy(listOfLogs);
+    const index = cpyLogs.findIndex(x => x._id === id);
+    if (index > -1) {
+      cpyLogs.splice(index, 1);
+    }
+
+    setListOfLogs(cpyLogs);
+  }
+
+  const deleteLog = (logid) => {
+    const dl = async () => {
+      const ans = await confirm('Är du säker?');
+      if (!ans) {
+        return;
+      }
+      await axios.delete(
+        api + '/logs',
+        {headers: {
+          Authorization: `Bearer ${token}`
+        },
+        data: {
+          logid: logentry._id
+        }}
+      )
+      .then(response => {
+        console.log(response);
+        popLog(logentry._id);
+        navigate('/dashboard');
+      })
+      .catch(err => console.error(err));
+    }
+
+    dl();
+  }
+
   return (
     <div>
       <div className='back'>
         <Link to='/dashboard'><div className='open'>&larr;</div></Link>
       </div>
       <div className='logcard'>
-          <h1 className='logheader'>{logentry.logname}</h1>
-          <div className='logupdated'>Log senast uppdaterad: {new Date(logentry.updatedAt).toLocaleString()}</div>
+        <div className='logtop'>
+          <div>
+            <h1 className='logheader'>{logentry.logname}</h1>
+            <div className='logupdated'>Log senast uppdaterad: {new Date(logentry.updatedAt).toLocaleString()}</div>
+          </div>
+          <div className='entrybtns'>
+            <div className='fntAwe'><FontAwesomeIcon icon={faPenToSquare} title='Redigera lognamn'/></div>
+            <div className='fntAwe'><FontAwesomeIcon icon={faTrash} title='Radera log'/></div>
+          </div>
+        </div>
           <div>
             Nytt inlägg:
             <NewEntry logentry={logentry} setLogentry={setLogentry}/>

@@ -7,12 +7,9 @@ const {
   createLog,
   updateLog,
   deleteLog,
-  createLogEntry,
-  updateLogEntry,
-  deleteLogEntry
 } = require('../controllers/log');
 
-router.route('/').post(createLog).get(getAllLogs);
-router.route('/:logid').get(getLog).delete(deleteLog).patch(updateLog);
+router.route('/').post(createLog).get(getAllLogs).delete(deleteLog).patch(updateLog);
+router.route('/:logid').get(getLog);
 
 module.exports = router;

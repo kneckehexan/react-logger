@@ -94,7 +94,7 @@ const DashBoard = () => {
             </div>
             <div className='listHead'>Senast använda Loggar</div>
             <div id='logres' className='logs'>
-              {listOfLogs.slice(0, 5).map(log => (
+              {listOfLogs.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).slice(0, 5).map(log => (
                 <div key={log._id} >
                   <div className='log'>
                     <div>{log.logname}</div>
