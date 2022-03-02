@@ -42,9 +42,6 @@ app.use('/api/v1/auth', authRouter); // authenticate
 app.use('/api/v1/logs', authenticateUser, logRouter); // authenticate
 app.use('/api/v1/entry', authenticateUser, entryRouter); // authenticate
 
-app.use(notFoundMiddleWare);
-app.use(errorHandlerMiddleware);
-
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, 'client/build')));
@@ -52,7 +49,7 @@ if (process.env.NODE_ENV === 'production') {
   // Handle React routing, return all requests to React app
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  })
+  });
 } else if(process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'client/src')));
 
@@ -60,6 +57,9 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client'))
   })
 }
+
+app.use(notFoundMiddleWare);
+app.use(errorHandlerMiddleware);
 
 // port
 const port = process.env.PORT || 5000;
