@@ -1,4 +1,4 @@
-import React  from 'react'
+import React, { useRef }  from 'react'
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
@@ -90,12 +90,14 @@ const NewEntry = ({logentry, setLogentry}) => {
     }
 
     cne();
+    setNewEntry('');
   }
+
 
   return (
     <div>
       <form onSubmit={createNewEntry}>
-        <textarea onChange={handleChange}/>
+        <textarea value={newEntry} onChange={handleChange} />
         <button type='submit'>Skicka</button>
       </form>
     </div>
