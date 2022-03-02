@@ -7,6 +7,7 @@ const {
   deleteLogEntry
 } = require('../controllers/entry');
 
-router.route('/').post(createLogEntry).patch(updateLogEntry).delete(deleteLogEntry);
+router.route('/').post(createLogEntry).patch(updateLogEntry);
+router.route('/:logid/:entryid').delete(deleteLogEntry);
 
 module.exports = router;

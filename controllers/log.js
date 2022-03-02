@@ -61,7 +61,7 @@ const updateLog = async (req, res) => {
 
 const deleteLog = async (req, res) => {
   const {
-    body: {
+    params: {
       logid: logid
     },
     user: {userId}

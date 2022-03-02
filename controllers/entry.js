@@ -58,7 +58,7 @@ const updateLogEntry = async (req, res) => {
 }
 
 const deleteLogEntry = async (req, res) => {
-  const {logid, entryid} = req.body;
+  const {logid, entryid} = req.params;
   const log = await Log.findOneAndUpdate(
     {_id: logid},
     { $pull : {entries: {_id: entryid}}},

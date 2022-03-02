@@ -221,15 +221,9 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        '/api/v1/entry',
-        {headers: {
-          Authorization: reqConfig(token).Authorization
-        },
-        data: {
-          logid: logentry._id,
-          entryid: entryid
-        }
-      })
+        '/api/v1/entry/' + logentry._id + '/' + entryid,
+        reqConfig(token)
+      )
       .then(response => {
         popEntry(entryid);
       })
@@ -246,13 +240,8 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        '/api/v1/logs',
-        {headers: {
-          Authorization: reqConfig(token).Authorization
-        },
-        data: {
-          logid: logentry._id
-        }}
+        '/api/v1/logs/' + logentry._id,
+        reqConfig(token)
       )
       .then(response => {
         console.log(response);
