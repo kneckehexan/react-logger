@@ -201,6 +201,8 @@ hr {
 .entry {
   display: flex;
   justify-content: flex-end;
+  flex-flow: column wrap;
+  align-items: flex-start;
 }
 
 .entrybtns {

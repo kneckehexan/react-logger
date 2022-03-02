@@ -7,6 +7,8 @@ import axios from 'axios';
 import { confirm } from 'react-confirm-box';
 import Logout from './logout';
 import reqConfig from '../app/vars';
+import Markdown from 'marked-react';
+import DOMPurify from 'dompurify';
 
 const EditLogName = ({logentry, setLogentry}) => {
 
@@ -282,7 +284,9 @@ const Log = () => {
               <div key={entry._id}>
                 <div className='entrycontent'>
                   <div className='entrydate'>{new Date(entry.createdAt).toLocaleDateString()}:</div>
-                  <div className='entry'>{entry.entry}</div>
+                  <div className='entry'>
+                    <Markdown>{DOMPurify.sanitize(entry.entry)}</Markdown>
+                  </div>
                   <div className='entrybtns'>
                     <div className='fntAwe' onClick={() => startEdit(entry._id)} value={entry._id}>
                       <FontAwesomeIcon icon={faPenToSquare} title='Redigera inlägg'/>
