@@ -30,7 +30,7 @@ const EditLogName = ({logentry, setLogentry}) => {
     e.preventDefault();
     const cln = async () => {
       await axios.patch(
-        '/logs',
+        '/api/v1/logs',
         {
           logid: logentry._id,
           logname: logname,
@@ -76,7 +76,7 @@ const NewEntry = ({logentry, setLogentry}) => {
     e.preventDefault();
     const cne = async () => {
       await axios.post(
-        '/entry',
+        '/api/v1/entry',
         {
           entry: newEntry,
           logid: logentry._id
@@ -129,7 +129,7 @@ const EditLog = ({entrytext, entryId, logentry, setLogentry}) => {
 
     const update = async () => {
       await axios.patch(
-        '/entry',
+        '/api/v1/entry',
         {
           entry: entry,
           logid: logentry._id,
@@ -221,7 +221,7 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        '/entry',
+        '/api/v1/entry',
         {headers: {
           Authorization: reqConfig(token).Authorization
         },
@@ -246,7 +246,7 @@ const Log = () => {
         return;
       }
       await axios.delete(
-        '/logs',
+        '/api/v1/logs',
         {headers: {
           Authorization: reqConfig(token).Authorization
         },

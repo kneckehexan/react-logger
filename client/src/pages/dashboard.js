@@ -18,7 +18,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     const getLogData = async (config) => {
-      const result = await axios.get('/logs', reqConfig(token))
+      const result = await axios.get('/api/v1/logs', reqConfig(token))
 
       setListOfLogs(result.data.logs);
     }
@@ -50,7 +50,7 @@ const DashBoard = () => {
 
     const createLog = async () => {
       await axios.post(
-        '/logs',
+        '/api/v1/logs',
         {
           logname: inputs.latestlogs
         },
